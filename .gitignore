@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Django migrations (если хочешь исключить)
+**/migrations/
+
+# IDE и прочее
+.vscode/
+.idea/
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
