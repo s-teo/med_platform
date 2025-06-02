@@ -7,7 +7,7 @@ from apps.doctors.models import TimeSlot
 class TimeSlotNestedSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
-        fields = ['id', 'doctor', 'start_time', 'end_time', 'is_booked']
+        fields = ['id', 'doctor', 'start_time', 'is_booked']
 
 
 class AppointmentSerializer(serializers.ModelSerializer):

@@ -13,7 +13,7 @@ class DoctorAdmin(admin.ModelAdmin):
 
 @admin.register(TimeSlot)
 class TimeSlotAdmin(admin.ModelAdmin):
-    list_display = ('doctor', 'id', 'start_time', 'end_time')
+    list_display = ('doctor', 'id', 'start_time',)
     list_filter = ('doctor',)
 
 @admin.register(DoctorReview)

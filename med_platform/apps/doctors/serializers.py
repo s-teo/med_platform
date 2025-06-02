@@ -17,13 +17,13 @@ class DoctorSerializer(serializers.ModelSerializer):
 class TimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
-        fields = ['id', 'doctor', 'start_time', 'end_time', 'is_booked']
+        fields = ['id', 'doctor', 'start_time', 'is_booked']
 
 
 class TimeSlotCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
-        fields = ['start_time', 'end_time']
+        fields = ['start_time', ]
 
     def create(self, validated_data):
         doctor = self.context['request'].user.doctor
