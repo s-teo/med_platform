@@ -24,7 +24,7 @@ class TimeSlot(models.Model):
     is_booked = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.doctor} - {self.start_time} to {self.end_time}"
+        return f"{self.doctor} - {self.start_time}"
 
 class DoctorReview(models.Model):
     doctor = models.ForeignKey(Doctor, related_name='reviews', on_delete=models.CASCADE)
