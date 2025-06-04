@@ -15,8 +15,10 @@ class AppointmentListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Пациент видит только свои записи
-        return Appointment.objects.filter(patient=self.request.user, status='scheduled')
+        return Appointment.objects.filter(
+            patient=self.request.user,
+            status__in=['scheduled', 'completed']
+        )
 
     def perform_create(self, serializer):
         time_slot = serializer.validated_data.get('time_slot')
