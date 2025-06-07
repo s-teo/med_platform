@@ -19,6 +19,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         fields = ['email', 'username', 'first_name', 'last_name', 'phone']
         extra_kwargs = {
             'username': {'required': True},
+            'phone': {'required': True},
             # другие валидации, если нужны
         }
 
@@ -30,10 +31,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'first_name', 'last_name', 'phone', 'password')
 
-    def validate_phone(self, value):
-        if value == '':
-            return None
-        return value
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)

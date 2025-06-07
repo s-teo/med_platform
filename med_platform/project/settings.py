@@ -152,15 +152,6 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'tsultanov151@gmail.com'
-EMAIL_HOST_PASSWORD = 'xqgs lwxv vuck husd'  # Пароль приложения (не обычный пароль)
-DEFAULT_FROM_EMAIL = 'Med Platform tsultanov151@gmail.com'
-
-
 SITE_ID = 1
 
 
