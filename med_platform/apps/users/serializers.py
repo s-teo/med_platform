@@ -16,7 +16,7 @@ from django.contrib.auth import get_user_model
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'username', 'first_name', 'last_name', 'phone', 'is_doctor']
+        fields = ['email', 'username', 'first_name', 'last_name', 'phone']
         extra_kwargs = {
             'username': {'required': True},
             # другие валидации, если нужны
@@ -28,7 +28,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'password')
+        fields = ('username', 'first_name', 'last_name', 'phone', 'password')
 
     def validate_phone(self, value):
         if value == '':

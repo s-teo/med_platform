@@ -170,3 +170,7 @@ CORS_ALLOWED_ORIGINS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+TWILIO_ACCOUNT_SID = 'AC1b59eff8006e1ed2154baddc221d59f2'  # из Twilio Console
+TWILIO_AUTH_TOKEN = '490483cdfd4a7f758b95168a990871d0'   # из Twilio Console
+TWILIO_PHONE_NUMBER = '+19784867994'  # купленный номер

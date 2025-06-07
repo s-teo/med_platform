@@ -5,9 +5,8 @@ from .models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     model = User
-    list_display = ('email', 'username', 'is_staff', 'is_email_verified', 'id')
-    search_fields = ('email', 'username')
-    readonly_fields = ('phone',)
+    list_display = ('username', 'is_staff', 'is_phone_verified', 'id')
+    search_fields = ('username',)
     fieldsets = BaseUserAdmin.fieldsets + (
-        (None, {'fields': ('is_email_verified', 'phone', 'is_doctor')}),
+        (None, {'fields': ('is_phone_verified', 'phone', 'is_doctor')}),
     )
