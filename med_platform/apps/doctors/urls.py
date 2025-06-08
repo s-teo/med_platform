@@ -3,6 +3,7 @@ from .views import (
     DoctorListView,
     AvailableTimeSlotsView,
     DoctorReviewListView, DoctorReviewCreateUpdateView,
+    TimeSlotCreateView,
 )
 
 urlpatterns = [
@@ -10,5 +11,6 @@ urlpatterns = [
     path('<int:doctor_id>/slots/', AvailableTimeSlotsView.as_view(), name='available-slots'),
     path('<int:doctor_id>/reviews/', DoctorReviewListView.as_view(), name='doctor-reviews'),
     path('reviews/', DoctorReviewCreateUpdateView.as_view(), name='create-or-update-review'),
+    path('timeslots/create/', TimeSlotCreateView.as_view(), name='timeslot-create'),
 
 ]

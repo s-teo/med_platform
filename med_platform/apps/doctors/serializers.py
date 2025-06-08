@@ -26,7 +26,8 @@ class TimeSlotCreateSerializer(serializers.ModelSerializer):
         fields = ['start_time', ]
 
     def create(self, validated_data):
-        doctor = self.context['request'].user.doctor
+        validated_data.pop('doctor', None)  # удаляем, если вдруг есть
+        doctor = self.context['request'].user.doctor_profile
         return TimeSlot.objects.create(doctor=doctor, **validated_data)
 
 

@@ -1,10 +1,11 @@
 from rest_framework import generics, permissions
 from .models import Doctor, TimeSlot, DoctorReview
 from rest_framework.response import Response
-from .permissions import IsReviewOwnerOrReadOnly
+from .permissions import IsReviewOwnerOrReadOnly, IsDoctor
 from .serializers import (
     DoctorSerializer,
     TimeSlotSerializer,
+    TimeSlotCreateSerializer,
     DoctorReviewSerializer,
     DoctorReviewCreateUpdateSerializer,
 )
@@ -58,3 +59,11 @@ class DoctorReviewCreateUpdateView(generics.CreateAPIView):
             serializer.save()
         else:
             serializer.save()
+
+
+class TimeSlotCreateView(generics.CreateAPIView):
+    serializer_class = TimeSlotCreateSerializer
+    permission_classes = [permissions.IsAuthenticated, IsDoctor]
+
+    def perform_create(self, serializer):
+        serializer.save(doctor=self.request.user.doctor_profile)
