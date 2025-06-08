@@ -2,11 +2,21 @@ from django.db import models
 from django.conf import settings
 
 
+class Specialty(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name_plural = "Specialties"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
 class Doctor(models.Model):
-    doctor_image = models.ImageField(upload_to='doctors_images', default='doctors_images/default.png', null=True,
-                                     blank=True)
+    doctor_image = models.ImageField(upload_to='doctors_images', default='doctors_images/default.png', null=True, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='doctor_profile')
-    specialty = models.CharField(max_length=100)
+    specialty = models.ForeignKey(Specialty, on_delete=models.SET_NULL, null=True, related_name='doctors')
     bio = models.TextField(blank=True)
     experience_years = models.PositiveIntegerField(default=0)
 
@@ -16,6 +26,7 @@ class Doctor(models.Model):
     @property
     def average_rating(self):
         return self.reviews.aggregate(avg=models.Avg('rating'))['avg'] or 0
+
 
 
 class TimeSlot(models.Model):

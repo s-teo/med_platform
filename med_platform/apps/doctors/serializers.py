@@ -1,12 +1,21 @@
 from rest_framework import serializers
-from .models import Doctor, TimeSlot, DoctorReview
+from .models import Doctor, TimeSlot, DoctorReview, Specialty
+
+
+class SpecialtySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialty
+        fields = ['id', 'name']
 
 
 class DoctorSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(source='user.get_full_name', read_only=True)
     average_rating = serializers.FloatField(read_only=True)
     username = serializers.CharField(source='user.username', read_only=True)
-
+    specialty = SpecialtySerializer(read_only=True)
+    specialty_id = serializers.PrimaryKeyRelatedField(
+        queryset=Specialty.objects.all(), write_only=True, source='specialty'
+    )
 
     class Meta:
         model = Doctor
@@ -46,13 +55,13 @@ class DoctorReviewCreateUpdateSerializer(serializers.ModelSerializer):
         fields = ['doctor', 'rating', 'comment']
 
     def create(self, validated_data):
-        return DoctorReview.objects.create(
-            patient=self.context['request'].user,
-            **validated_data
-        )
+        return DoctorReview.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.rating = validated_data.get('rating', instance.rating)
         instance.comment = validated_data.get('comment', instance.comment)
         instance.save()
         return instance
+
+
+
