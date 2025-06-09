@@ -7,7 +7,7 @@ class Specialty(models.Model):
 
     class Meta:
         verbose_name_plural = "Specialties"
-        ordering = ['name']
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -16,12 +16,13 @@ class Specialty(models.Model):
 class Doctor(models.Model):
     doctor_image = models.ImageField(upload_to='doctors_images', default='doctors_images/default.png', null=True, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='doctor_profile')
-    specialty = models.ForeignKey(Specialty, on_delete=models.SET_NULL, null=True, related_name='doctors')
+    specialty = models.ManyToManyField(Specialty, related_name='doctors')  # <--- так можно несколько
     bio = models.TextField(blank=True)
     experience_years = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"Dr. {self.user.get_full_name()} ({self.specialty}) {self.user.username}"
+        specialties = ", ".join([s.name for s in self.specialty.all()])
+        return f"Dr. {self.user.get_full_name()} ({specialties}) {self.user.username}"
 
     @property
     def average_rating(self):

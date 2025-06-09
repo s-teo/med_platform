@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from .models import Doctor, TimeSlot, DoctorReview
+from .models import Doctor, TimeSlot, DoctorReview, Specialty
 from .permissions import IsReviewOwnerOrReadOnly, IsDoctor
 from .serializers import (
     DoctorSerializer,
@@ -8,6 +8,7 @@ from .serializers import (
     TimeSlotCreateSerializer,
     DoctorReviewSerializer,
     DoctorReviewCreateUpdateSerializer,
+    SpecialtySerializer,
 )
 from apps.appointments.serializers import AppointmentSerializer  # если есть такой сериализатор
 from apps.appointments.models import Appointment  # если у тебя записи в другом приложении
@@ -89,3 +90,16 @@ class DoctorAppointmentsView(generics.ListAPIView):
     def get_queryset(self):
         doctor = self.request.user.doctor_profile
         return Appointment.objects.filter(doctor=doctor)
+
+
+class SpecialtyListCreateView(generics.ListCreateAPIView):
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
+
+    def create(self, request, *args, **kwargs):
+        many = isinstance(request.data, list)
+        serializer = self.get_serializer(data=request.data, many=many)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

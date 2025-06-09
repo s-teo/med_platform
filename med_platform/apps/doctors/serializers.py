@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Doctor, TimeSlot, DoctorReview, Specialty
 
 
+
 class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialty
@@ -12,15 +13,16 @@ class DoctorSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(source='user.get_full_name', read_only=True)
     average_rating = serializers.FloatField(read_only=True)
     username = serializers.CharField(source='user.username', read_only=True)
-    specialty = SpecialtySerializer(read_only=True)
-    specialty_id = serializers.PrimaryKeyRelatedField(
-        queryset=Specialty.objects.all(), write_only=True, source='specialty'
+    specialty = SpecialtySerializer(read_only=True, many=True)  # <-- добавь many=True
+    specialty_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Specialty.objects.all(), write_only=True, many=True, source='specialty'
     )
 
     class Meta:
         model = Doctor
-        fields = ['id', 'username','doctor_image', 'full_name', 'specialty', 'bio', 'experience_years',
-                  'average_rating']
+        fields = ['id', 'username', 'doctor_image', 'full_name', 'specialty', 'bio', 'experience_years',
+                  'average_rating', 'specialty_ids']  # добавь specialty_ids для записи
+
 
 
 class TimeSlotSerializer(serializers.ModelSerializer):

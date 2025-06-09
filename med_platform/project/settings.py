@@ -45,9 +45,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
 
-    'apps.users',
-    'apps.appointments',
-    'apps.doctors',
+    'apps.users.apps.UsersConfig',
+    'apps.doctors.apps.DoctorsConfig',
+    'apps.appointments.apps.AppointmentsConfig',
 ]
 
 MIDDLEWARE = [

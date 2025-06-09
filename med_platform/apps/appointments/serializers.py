@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Appointment
-from apps.doctors.models import TimeSlot, Doctor
+from apps.doctors.models import TimeSlot, Doctor, Specialty
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -12,9 +12,16 @@ class TimeSlotNestedSerializer(serializers.ModelSerializer):
         fields = ['id', 'doctor', 'start_time', 'is_booked']
 
 
+class SpecialtyNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialty
+        fields = ['id', 'name']
+
+
 class DoctorNestedSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(source='user.get_full_name', read_only=True)
     phone = serializers.CharField(source='user.phone', read_only=True)
+    specialty = SpecialtyNestedSerializer(read_only=True, many=True)  # <-- добавь many=True
 
     class Meta:
         model = Doctor
