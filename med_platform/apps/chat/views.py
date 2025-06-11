@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 from .models import ChatMessage
+from apps.doctors.models import Doctor  # Импорт модели Doctor
+
 
 User = get_user_model()
 
@@ -36,7 +38,6 @@ class DialogsListView(APIView):
     def get(self, request):
         user = request.user
 
-        # Все ID пользователей, с которыми есть переписка
         messages = ChatMessage.objects.filter(Q(user=user) | Q(receiver=user))
 
         interlocutor_ids = set()
@@ -46,7 +47,6 @@ class DialogsListView(APIView):
             elif msg.receiver == user and msg.user:
                 interlocutor_ids.add(msg.user.id)
 
-        # Для каждого собеседника находим последнее сообщение
         dialogs = []
         for interlocutor_id in interlocutor_ids:
             last_msg = messages.filter(
@@ -56,14 +56,23 @@ class DialogsListView(APIView):
 
             interlocutor = User.objects.get(id=interlocutor_id)
 
+            # Пытаемся найти врача, связанного с этим пользователем
+            try:
+                doctor = Doctor.objects.get(user=interlocutor)
+                full_name = interlocutor.get_full_name() or interlocutor.username
+                doctor_image = request.build_absolute_uri(doctor.doctor_image.url) if doctor.doctor_image else None
+            except Doctor.DoesNotExist:
+                full_name = interlocutor.get_full_name() or interlocutor.username
+                doctor_image = None
+
             dialogs.append({
                 "user_id": interlocutor.id,
                 "username": interlocutor.username,
+                "full_name": full_name,
+                "doctor_image": doctor_image,
                 "last_message": last_msg.message if last_msg else "",
                 "timestamp": last_msg.timestamp if last_msg else None,
             })
 
-        # Сортируем по времени последнего сообщения
         dialogs = sorted(dialogs, key=lambda x: x['timestamp'], reverse=True)
-
         return Response(dialogs)

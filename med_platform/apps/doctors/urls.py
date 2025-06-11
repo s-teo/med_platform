@@ -7,12 +7,14 @@ from .views import (
     TimeSlotCreateView,
     DoctorTimeSlotsView,
     DoctorAppointmentsView,
-    SpecialtyListCreateView,
+    SpecialtyListCreateView, DoctorDetailView,
 )
 
 urlpatterns = [
     path('', DoctorListView.as_view(), name='doctor-list'),
     path('<int:doctor_id>/slots/', AvailableTimeSlotsView.as_view(), name='available-slots'),
+    path('<int:id>/', DoctorDetailView.as_view(), name='doctor-detail'),  # 👈 вот он
+
     path('<int:doctor_id>/reviews/', DoctorReviewListView.as_view(), name='doctor-reviews'),
     path('reviews/', DoctorReviewCreateUpdateView.as_view(), name='create-or-update-review'),
     path('timeslots/create/', TimeSlotCreateView.as_view(), name='timeslot-create'),

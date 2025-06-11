@@ -1,6 +1,16 @@
 from rest_framework import serializers
 from .models import Doctor, TimeSlot, DoctorReview, Specialty
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
+
+
+class UserNestedSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(source='get_full_name', read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'full_name', 'phone']
 
 
 class SpecialtySerializer(serializers.ModelSerializer):
@@ -12,7 +22,7 @@ class SpecialtySerializer(serializers.ModelSerializer):
 class DoctorSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(source='user.get_full_name', read_only=True)
     average_rating = serializers.FloatField(read_only=True)
-    username = serializers.CharField(source='user.username', read_only=True)
+    user = UserNestedSerializer(read_only=True)
     specialty = SpecialtySerializer(read_only=True, many=True)  # <-- добавь many=True
     specialty_ids = serializers.PrimaryKeyRelatedField(
         queryset=Specialty.objects.all(), write_only=True, many=True, source='specialty'
@@ -20,7 +30,7 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ['id', 'username', 'doctor_image', 'full_name', 'specialty', 'bio', 'experience_years',
+        fields = ['id', 'user', 'doctor_image', 'full_name', 'specialty', 'bio', 'experience_years',
                   'average_rating', 'specialty_ids']  # добавь specialty_ids для записи
 
 

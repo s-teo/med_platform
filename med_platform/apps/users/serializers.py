@@ -16,7 +16,7 @@ from django.contrib.auth import get_user_model
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'username', 'first_name', 'last_name', 'phone', 'is_doctor']
+        fields = ['id', 'username', 'first_name', 'last_name', 'phone', 'is_doctor']
         read_only_fields = ['is_doctor']
         extra_kwargs = {
             'username': {'required': True},

@@ -20,6 +20,13 @@ class DoctorListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
 
+class DoctorDetailView(generics.RetrieveAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'id'
+
+
 class AvailableTimeSlotsView(generics.ListAPIView):
     serializer_class = TimeSlotSerializer
     permission_classes = [permissions.AllowAny]
