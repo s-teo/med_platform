@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-e9n%ym_+z%3(b75vn273x6svzf1c&4#dy-re6&@3@(@dmo2(g@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 
 # Application definition
@@ -44,10 +45,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'channels',
 
     'apps.users.apps.UsersConfig',
     'apps.doctors.apps.DoctorsConfig',
     'apps.appointments.apps.AppointmentsConfig',
+    'apps.chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +168,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 TWILIO_ACCOUNT_SID = 'AC1b59eff8006e1ed2154baddc221d59f2'  # из Twilio Console
 TWILIO_AUTH_TOKEN = '490483cdfd4a7f758b95168a990871d0'   # из Twilio Console
 TWILIO_PHONE_NUMBER = '+19784867994'  # купленный номер
+
+
+ASGI_APPLICATION = 'project.asgi.application'
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
